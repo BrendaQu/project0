@@ -1,0 +1,78 @@
+Customers:
+
+create table customers (CustomerID int NOT NULL AUTO_INCREMENT, FirstName varchar(50), LastName varchar(50), Email varchar(62) UNIQUE, Password varchar(20), PRIMARY KEY(CustomerID));
+
+Employees:
+
+create table employees (EmployeeID int NOT NULL AUTO_INCREMENT, FirstName varchar(50), LastName varchar(50), Email varchar(62) UNIQUE, Password varchar(20), PRIMARY KEY(EmployeeID));
+
+Accounts:
+
+create table accounts (AccountID int NOT NULL AUTO_INCREMENT, CustomerID int, Balance int, PendingTransfer int DEFAULT 0, PRIMARY KEY (AccountID), FOREIGN KEY (CustomerID) REFERENCES customers(CustomerID));
+
+Pending Accounts table:
+create table pending_accounts (PendingAccID int NOT NULL AUTO_INCREMENT, CustomerID int, StartingBalance int, PRIMARY KEY (PendingAccID), FOREIGN KEY (CustomerID) REFERENCES customers (CustomerID));
+
+Pending New Customer table:
+create table pending_new_customers (PendingCustID int NOT NULL AUTO_INCREMENT, FirstName varchar(50), LastName varchar(50), Email varchar(62) UNIQUE, Password varchar(20), Balance decimal(15,2), PRIMARY KEY(PendingCustID));
+
+Transaciton Table:
+create table transactions (TransactionID int NOT NULL AUTO_INCREMENT, CustomerID int, Type ENUM("New Customer Registration", "New Bank Account", "Withdrawal", "Deposit", "Post Money Transfer", "Accept Money Transfer"), Amount decimal(15,2), PRIMARY KEY(TransactionID), FOREIGN KEY (CustomerID) REFERENCES customers (CustomerID));
+
+
+//Store procedures
+//insert employees
+DELIMITER //
+create PROCEDURE insert_newemployee(IN emp_fname varchar(50), IN emp_lname varchar(50), IN emp_email varchar(62), IN emp_pass varchar(20))
+BEGIN
+    insert into employees(FirstName, Lastname, Email, Password) values (emp_fname, emp_lname, emp_email, emp_pass);
+END //
+DELIMITER ;
+
+CALL insert_newemployee('Mark', 'Smith', 'msmith@gmail.com', 'password1');
+
+DELIMITER ; 
+
+
+//insert Transactions
+DELIMITER //
+create PROCEDURE insert_transaction(IN cus_id int, IN type  enum('New Customer Registration','New Bank Account','Withdrawal','Deposit','Post Money Transfer','Accept Money Transfer'), IN amt decimal(15,2))
+BEGIN
+    insert into transactions(CustomerID, Type, Amount) values (cus_id, type, amt);
+END //
+DELIMITER ;
+
+CALL insert_transactions(1,1,100.50);
+
+DELIMITER ; 
+"CALL insert_newpendingcustomer(?, ?, ?, ?, ?)"
+
+//insert customers
+DELIMITER //
+create PROCEDURE insert_newcustomer(IN cus_fname varchar(50), IN cus_lname varchar(50), IN cus_email varchar(62), IN cus_pass varchar(20))
+BEGIN
+    insert into customers(FirstName, Lastname, Email, Password) values (cus_fname, cus_lname, cus_email, cus_pass);
+END //
+DELIMITER ;
+
+CALL insert_newcusotmer('Mark', 'Smith', 'msmith@gmail.com', 'password1');
+
+insert pending_customers:
+
+DELIMITER //
+create PROCEDURE insert_newpendingcustomer(IN pcus_fname varchar(50), IN pcus_lname varchar(50), IN pcus_email varchar(62), IN pcus_pass varchar(20), IN pcus_bal decimal(15,2))
+BEGIN
+    insert into pending_new_customers(FirstName, LastName, Email, Password, Balance) values (pcus_fname, pcus_lname, pcus_email, pcus_pass, pcus_bal);
+END //
+DELIMITER ;
+
+CALL insert_newpendingcustomer('Mark', 'Smith', 'msmith@gmail.com', 'password1');
+
+// view Accounts by ID number
+mysql> select * from accounts where CustomerID = 21
+
+//Add AccountIDTransferFrom column
+ALTER TABLE accounts add AccountTransferID int;
+
+//Set two rows AccountTransferID null
+Update accounts set AccountTransferID = NULL where AccountID = 11 and where AccountID = 10;
