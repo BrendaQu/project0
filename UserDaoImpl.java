@@ -120,7 +120,6 @@ public class UserDaoImpl implements UserDao {
 
     }
 
-
     @Override
     public void addCustomer(String firstName, String lastName, String email, String password) throws SQLException {
         String sql = "CALL insert_newcustomer(?, ?, ?, ?)";

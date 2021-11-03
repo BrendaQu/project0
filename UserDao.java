@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface UserDao {
+    //Log in, check that email and passwords match on tables
     Employee getEmployeeByLogin(String email, String password) throws SQLException;
     Customer getCustomerByLogin(String email, String password) throws SQLException;
     //Register new customers in Pending New Customers table

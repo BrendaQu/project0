@@ -1,5 +1,6 @@
 package com.company;
 
+//Transaction class for transaction logs
 public class Transaction {
     protected int trans_id;
     protected int cus_id;
@@ -12,6 +13,7 @@ public class Transaction {
         this.type = type;
         this.amount = amount;
     }
+    //getter methods
     public int getTransID() {
         return trans_id;
     }

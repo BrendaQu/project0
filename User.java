@@ -1,5 +1,5 @@
 package com.company;
-
+//User is the parent with Employee and Customer class as the subclasses
 public class User {
     protected int id;
     protected String firstName;
@@ -19,6 +19,7 @@ public class User {
 
     }
 
+    //Getter methods, these will be inherited by Employee and Customers
     public int getId() {
         return id;
     }
@@ -76,13 +77,7 @@ class Customer extends User{
         this.start_bal = start_bal;
 
     }
-    public void Account(int acc_id, int cus_id, float balance, float pending_trans){
-        this.acc_id = acc_id;
-        this.cus_id = cus_id;
-        this.balance = balance;
-        this.pending_trans = pending_trans;
-    }
-
+    //Getter methods
     public float getStartBal(){
         return start_bal;
     }
